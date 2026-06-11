@@ -11,6 +11,7 @@ from app.models.product import Product
 from app.models.order import Order
 from app.models.order_item import OrderItem
 
+
 from app.schemas.order import OrderCreate
 
 router = APIRouter(
@@ -82,4 +83,32 @@ def create_order(
 def get_orders(
     db: Session = Depends(get_db)
 ):
-    return db.query(Order).all()
+    orders = db.query(Order).all()
+
+    result = []
+
+    for order in orders:
+
+        customer = db.query(Customer)\
+            .filter(Customer.id == order.customer_id)\
+            .first()
+
+        order_item = db.query(OrderItem)\
+            .filter(OrderItem.order_id == order.id)\
+            .first()
+
+        product = None
+
+        if order_item:
+            product = db.query(Product)\
+                .filter(Product.id == order_item.product_id)\
+                .first()
+
+        result.append({
+            "id": order.id,
+            "customer_name": customer.name if customer else "",
+            "product_name": product.name if product else "",
+            "quantity": order_item.quantity if order_item else 0
+        })
+
+    return result

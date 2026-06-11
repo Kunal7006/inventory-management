@@ -100,19 +100,18 @@ function Orders() {
 
       <hr />
 
-      {orders.map(order => {
-        const customer = customers.find(
-            c => c.id === order.customer_id
-        );
-
-        return (
-            <div key={order.id}>
-            Order #{order.id}
-            {" - "}
-            Customer: {customer?.name || "Unknown"}
-            </div>
-        );
-        })}
+      {orders.map(order => (
+        <div key={order.id}>
+            <strong>Order #{order.id}</strong>
+            <br />
+            Customer: {order.customer_name}
+            <br />
+            Product: {order.product_name}
+            <br />
+            Quantity: {order.quantity}
+            <hr />
+        </div>
+        ))}
     </div>
   );
 }
