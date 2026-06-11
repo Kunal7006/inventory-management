@@ -22,7 +22,13 @@ function App() {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar
+        position="static"
+        sx={{
+          background:
+            "linear-gradient(90deg, #1976d2, #42a5f5)"
+        }}
+      >
         <Toolbar>
           <Typography variant="h5">
             Inventory Management System
@@ -32,43 +38,96 @@ function App() {
 
       <Container maxWidth="lg" sx={{ mt: 4 }}>
 
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
-            <Card>
+        <Grid
+          container
+          spacing={3}
+          justifyContent="center"
+          sx={{ mt: 2 }}
+        >
+          {/* Products Card */}
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              onClick={() => setTab(0)}
+              sx={{
+                minWidth: 220,
+                textAlign: "center",
+                background: "#E3F2FD",
+                borderRadius: 3,
+                boxShadow: 4,
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: 8
+                }
+              }}
+            >
               <CardContent>
                 <Typography variant="h6">
                   Products
                 </Typography>
 
-                <Typography variant="h4">
+                <Typography variant="h3">
                   📦
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <Card>
+          {/* Customers Card */}
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              onClick={() => setTab(1)}
+              sx={{
+                minWidth: 220,
+                textAlign: "center",
+                background: "#E8F5E9",
+                borderRadius: 3,
+                boxShadow: 4,
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: 8
+                }
+              }}
+            >
               <CardContent>
                 <Typography variant="h6">
                   Customers
                 </Typography>
 
-                <Typography variant="h4">
+                <Typography variant="h3">
                   👤
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <Card>
+          {/* Orders Card */}
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              onClick={() => setTab(2)}
+              sx={{
+                minWidth: 220,
+                textAlign: "center",
+                background: "#FFF3E0",
+                borderRadius: 3,
+                boxShadow: 4,
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: 8
+                }
+              }}
+            >
               <CardContent>
                 <Typography variant="h6">
                   Orders
                 </Typography>
 
-                <Typography variant="h4">
+                <Typography variant="h3">
                   🛒
                 </Typography>
               </CardContent>
@@ -81,10 +140,22 @@ function App() {
             value={tab}
             onChange={(e, value) => setTab(value)}
             centered
+            textColor="inherit"
+            indicatorColor="secondary"
+            sx={{
+              "& .MuiTab-root": {
+                fontSize: "16px",
+                fontWeight: "bold",
+                color: "#555",
+              },
+              "& .Mui-selected": {
+                color: "#1976d2",
+              }
+            }}
           >
-            <Tab label="Products" />
-            <Tab label="Customers" />
-            <Tab label="Orders" />
+            <Tab label="📦 Products" />
+            <Tab label="👥 Customers" />
+            <Tab label="🛒 Orders" />
           </Tabs>
         </Box>
 
