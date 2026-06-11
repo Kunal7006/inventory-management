@@ -3,81 +3,95 @@ import api from "../services/api";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
+  const [customers, setCustomers] = useState([]);
+  const [products, setProducts] = useState([]);
 
-  const [form, setForm] = useState({
-    customer_id: "",
-    product_id: "",
-    quantity: ""
-  });
-
-  const loadOrders = () => {
-    api.get("/orders/")
-      .then(res => setOrders(res.data));
-  };
+  const [customerId, setCustomerId] = useState("");
+  const [productId, setProductId] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   useEffect(() => {
-    loadOrders();
+    api.get("/orders/").then(res => setOrders(res.data));
+    api.get("/customers/").then(res => setCustomers(res.data));
+    api.get("/products/").then(res => setProducts(res.data));
   }, []);
 
-  const handleSubmit = async (e) => {
+  const createOrder = async (e) => {
     e.preventDefault();
 
-    await api.post("/orders/", {
-      customer_id: Number(form.customer_id),
-      items: [
-        {
-          product_id: Number(form.product_id),
-          quantity: Number(form.quantity)
-        }
-      ]
-    });
+    try {
+      await api.post("/orders/", {
+        customer_id: Number(customerId),
+        items: [
+          {
+            product_id: Number(productId),
+            quantity: Number(quantity)
+          }
+        ]
+      });
 
-    setForm({
-      customer_id: "",
-      product_id: "",
-      quantity: ""
-    });
+      alert("Order Created!");
 
-    loadOrders();
+      const res = await api.get("/orders/");
+      setOrders(res.data);
+
+    } catch (err) {
+      alert(
+        err?.response?.data?.detail ||
+        "Failed to create order"
+      );
+    }
   };
 
   return (
     <div>
       <h2>Orders</h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder="Customer ID"
-          value={form.customer_id}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              customer_id: e.target.value
-            })
-          }
-        />
+      <form onSubmit={createOrder}>
+        <select
+          value={customerId}
+          onChange={(e) => setCustomerId(e.target.value)}
+        >
+          <option value="">Select Customer</option>
+
+          {customers.map(customer => (
+            <option
+              key={customer.id}
+              value={customer.id}
+            >
+              {customer.name}
+            </option>
+          ))}
+        </select>
+
+        <br /><br />
+
+        <select
+          value={productId}
+          onChange={(e) => setProductId(e.target.value)}
+        >
+          <option value="">Select Product</option>
+
+          {products.map(product => (
+            <option
+              key={product.id}
+              value={product.id}
+            >
+              {product.name} (Stock: {product.stock})
+            </option>
+          ))}
+        </select>
+
+        <br /><br />
 
         <input
-          placeholder="Product ID"
-          value={form.product_id}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              product_id: e.target.value
-            })
-          }
-        />
-
-        <input
+          type="number"
           placeholder="Quantity"
-          value={form.quantity}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              quantity: e.target.value
-            })
-          }
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
         />
+
+        <br /><br />
 
         <button type="submit">
           Place Order
@@ -88,9 +102,7 @@ function Orders() {
 
       {orders.map(order => (
         <div key={order.id}>
-          Order #{order.id}
-          {" "}
-          Customer: {order.customer_id}
+          Order #{order.id} - Customer {order.customer_id}
         </div>
       ))}
     </div>
