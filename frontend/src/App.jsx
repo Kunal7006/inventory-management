@@ -29,9 +29,18 @@ function App() {
             "linear-gradient(90deg, #1976d2, #42a5f5)"
         }}
       >
-        <Toolbar>
-          <Typography variant="h5">
-            Inventory Management System
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between"
+          }}
+        >
+          <Typography variant="h5" fontWeight="bold">
+            📦 Inventory Management System
+          </Typography>
+
+          <Typography variant="body1">
+            FastAPI • React • PostgreSQL
           </Typography>
         </Toolbar>
       </AppBar>
@@ -163,6 +172,28 @@ function App() {
           {tab === 0 && <Products />}
           {tab === 1 && <Customers />}
           {tab === 2 && <Orders />}
+        </Box>
+
+        <Box
+          sx={{
+            mt: 8,
+            py: 3,
+            textAlign: "center",
+            borderTop: "1px solid #ddd",
+            color: "#666"
+          }}
+        >
+          <Typography variant="body1">
+            Inventory Management System
+          </Typography>
+
+          <Typography variant="body2">
+            Built with React, FastAPI & PostgreSQL
+          </Typography>
+
+          <Typography variant="caption">
+            © 2026 All Rights Reserved
+          </Typography>
         </Box>
 
       </Container>
